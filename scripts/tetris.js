@@ -15,6 +15,7 @@ const matrix = [
 function draw() {
     context.fillStyle = '#000'; //fills canvas with this color
     context.fillRect(0,0, canvas.width, canvas.height); // shape of the canvas. Width and Height.
+    drawMatrix(tetrisBoard, {x: 0, y:0});
     drawMatrix(player.matrix, player.pos);
 }
 //this loop goes through the matrix and checks whether it is a 0 or not.
@@ -33,6 +34,14 @@ function drawMatrix(matrix, offset) {
     });
 }
 
+function holdMatrix(w, h) {
+    const matrix = [];
+    while (h--) {
+        matrix.push(new Array(w).fill(0));
+    }
+    return matrix;
+}
+
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
@@ -49,8 +58,62 @@ function update(time = 0) {
     requestAnimationFrame(update);
 }
 
+const tetrisBoard = holdMatrix(12, 20);
+
+//Keeps track of where the pieces are at.
+function merge( tetrisBoard, player) {
+    player.matrix.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                tetrisBoard[y + player.pos.y][x + player.pos.x] = value;
+            }
+        });
+    });
+}
+
+function collision(tetrisBoard, player) {
+    const [m, o] = [player.matrix, player.pos];
+    for (let y = 0; y < m.length; ++y) {
+        for (let x = 0; x < m[y].length; ++x) {
+            if (m[y][x] !== 0 &&
+               (tetrisBoard[y + o.y] && 
+               tetrisBoard[y + o.y][x + o.x]) !== 0) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 const player = {
     pos: {x: 5, y: 5},
     matrix: matrix,
 }
+
+function playerMove(dir) {
+    player.pos.x += dir;
+    if (collision(tetrisBoard, player)) {
+        player.pos.x -= dir;
+    }
+}
+
+function playerDrop() {
+    player.pos.y ++;
+    if (collision(tetrisBoard, player)) {
+        player.pos.y--;
+        merge(tetrisBoard, player);
+        player.pos.y = 0;
+    }
+    dropCounter = 0;
+}
+
+document.addEventListener('keydown', event => {
+    if (event.keyCode === 37) {
+        playerMove(-1);
+    } else if (event.keyCode === 39) {
+        playerMove(1);
+    } else if (event.keyCode === 40 ) {
+        playerDrop();
+    }
+});
 update();
