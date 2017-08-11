@@ -33,7 +33,7 @@ function drawMatrix(matrix, offset) {
         });
     });
 }
-
+//Creates the matrix when a piece is dropped.
 function holdMatrix(w, h) {
     const matrix = [];
     while (h--) {
@@ -41,14 +41,15 @@ function holdMatrix(w, h) {
     }
     return matrix;
 }
-
+//keeps track of time and makes sure the pieces are going if the player isn't manually moving them down
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
+//this updates the time of the game and changes the dropCounter depending if the player moved or not.
 function update(time = 0) {
     const gameTime = time - lastTime;
     lastTime = time;
-    
+
     dropCounter += gameTime;
     if (dropCounter > dropInterval) {
         player.pos.y ++;
@@ -57,7 +58,7 @@ function update(time = 0) {
     draw();
     requestAnimationFrame(update);
 }
-
+//this create the playing board or border.
 const tetrisBoard = holdMatrix(12, 20);
 
 //Keeps track of where the pieces are at.
@@ -70,13 +71,15 @@ function merge( tetrisBoard, player) {
         });
     });
 }
-
+//collision for the player's pieces and the board
+// For loop checks if it does not equal 0 that means a piece is there and it can't replace it
+// else means it is a 0 and can be replaced.
 function collision(tetrisBoard, player) {
     const [m, o] = [player.matrix, player.pos];
     for (let y = 0; y < m.length; ++y) {
         for (let x = 0; x < m[y].length; ++x) {
             if (m[y][x] !== 0 &&
-               (tetrisBoard[y + o.y] && 
+               (tetrisBoard[y + o.y] &&
                tetrisBoard[y + o.y][x + o.x]) !== 0) {
                 return true;
             }
@@ -84,19 +87,43 @@ function collision(tetrisBoard, player) {
     }
     return false;
 }
-
+//Keeps Track of the players pieces
 const player = {
     pos: {x: 5, y: 5},
     matrix: matrix,
 }
-
+//Allows the player to move along the board in the direction chosen.
 function playerMove(dir) {
     player.pos.x += dir;
     if (collision(tetrisBoard, player)) {
         player.pos.x -= dir;
     }
 }
-
+// Flips where in the matrix is currently not equal to 0.
+// This allows us to move the pieces clockwise and counter clockwise.
+function rotate(matrix, dir) {
+  for (let y = 0; y < matrix.length; ++y) {
+    for (let x = 0; x < y; ++x) {
+      [
+        matrix[x][y],
+        matrix[y][x],
+      ] = [
+        matrix[y][x],
+        matrix[x][y],
+      ];
+    }
+  }
+  if (dir > 0) {
+    matrix.forEach(row => row.reverse());
+  } else {
+    matrix.reverse();
+  }
+}
+//This allows the player to move their pieces.
+function playerRotate(dir) {
+  rotate(player.matrix, dir);
+}
+// Allows the player to move the pieces down. and saves the position.
 function playerDrop() {
     player.pos.y ++;
     if (collision(tetrisBoard, player)) {
@@ -106,7 +133,9 @@ function playerDrop() {
     }
     dropCounter = 0;
 }
-
+//an event listener watching for key codes
+// Keycodes represent what key on the keyboard is pressed.
+// Moves the pieces or rotates depending on the key pressed.
 document.addEventListener('keydown', event => {
     if (event.keyCode === 37) {
         playerMove(-1);
@@ -114,6 +143,11 @@ document.addEventListener('keydown', event => {
         playerMove(1);
     } else if (event.keyCode === 40 ) {
         playerDrop();
+    } else if (event.keyCode === 81) {
+      playerRotate(-1);
+    } else if (event.keyCode === 69) {
+      playerRotate(1);
     }
 });
+//updates the state of the board.
 update();
