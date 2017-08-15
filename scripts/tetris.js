@@ -1,19 +1,19 @@
 const canvas = document.getElementById('tetris'); //Gets the canvas from html document.
-const context = canvas.getContext('2d'); //Will be rendered in 2d
+const context = canvas.getContext('2d'); // Selects which context api to use
 
 context.scale(20,20); //increases the size of the pieces by 20 x 20
 
 //colors of pieces
 const colors = [
-  null,
-  'red',
-  'blue',
-  'purple',
-  'green',
-  'yellow',
-  'orange',
-  'cyan',
-]
+    null,
+    '#9C03FF',
+    '#ECFF03',
+    '#FF9003',
+    '#010DFE',
+    '#03FFF4',
+    '#FFE138',
+    '#FF0303',
+];
 
 function draw() {
     context.fillStyle = '#000'; //fills canvas with this color
@@ -46,6 +46,7 @@ function holdMatrix(w, h) {
 }
 
 //Keeps track of your score and row count
+// Clears or sweeps the board when a line is made.
 function tetrisSweep() {
   let rowCount = 1;
   outer: for (let y = tetrisBoard.length - 1; y > 0; --y) {
@@ -67,43 +68,43 @@ function createPiece(type) {
   if (type === 'T') {
     return [
       [0, 0, 0],
-      [8, 8, 8],
-      [0, 8, 0],
+      [1, 1, 1],
+      [0, 1, 0],
     ];
   } else if (type === 'O') {
     return [
-      [7, 7],
-      [7, 7],
+      [2, 2],
+      [2, 2],
     ];
   } else if (type === "L") {
     return [
-      [0, 6, 0],
-      [0, 6, 0],
-      [0, 6, 6],
+      [0, 3, 0],
+      [0, 3, 0],
+      [0, 3, 3],
     ];
   } else if (type === "J") {
     return [
-      [0, 5, 0],
-      [0, 5, 0],
-      [5, 5, 0],
+      [0, 4, 0],
+      [0, 4, 0],
+      [4, 4, 0],
     ];
   } else if (type === "I") {
     return [
-      [0, 3, 0, 0],
-      [0, 3, 0, 0],
-      [0, 3, 0, 0],
-      [0, 3, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
     ];
   } else if (type === "S") {
     return [
-      [0, 2, 2],
-      [2, 2, 0],
+      [0, 6, 6],
+      [6, 6, 0],
       [0, 0, 0],
     ];
   } else if (type === "Z") {
     return [
-      [1, 1, 0],
-      [0, 1, 1],
+      [7, 7, 0],
+      [0, 7, 7],
       [0, 0, 0],
     ];
   }
@@ -112,22 +113,23 @@ function createPiece(type) {
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
+
 //this updates the time of the game and changes the dropCounter depending if the player moved or not.
 function update(time = 0) {
     const gameTime = time - lastTime;
     lastTime = time;
-    
+
     dropCounter += gameTime;
-    
+
     if (dropCounter > dropInterval) {
-        dropCounter = 0;
-        player.pos.y ++;
+      playerDrop();
     }
+    lastTime = time;
     draw();
     requestAnimationFrame(update);
 }
 //this create the playing board or border.
-const tetrisBoard = holdMatrix(12, 20);
+const tetrisBoard = holdMatrix(10, 20);
 
 //Keeps track of where the pieces are at.
 function merge( tetrisBoard, player) {
@@ -143,7 +145,8 @@ function merge( tetrisBoard, player) {
 // For loop checks if it does not equal 0 that means a piece is there and it can't replace it
 // else means it is a 0 and can be replaced.
 function collision(tetrisBoard, player) {
-    const [m, o] = [player.matrix, player.pos];
+    const m = player.matrix;
+    const o = player.pos;
     for (let y = 0; y < m.length; ++y) {
         for (let x = 0; x < m[y].length; ++x) {
             if (m[y][x] !== 0 &&
@@ -160,6 +163,7 @@ const player = {
     pos: {x: 0, y: 0},
     matrix: null,
     score: 0,
+    health: 100,
 };
 //Allows the player to move along the board in the direction chosen.
 function playerMove(dir) {
@@ -172,7 +176,7 @@ function playerMove(dir) {
 // creates the matrix by checking the pieces of the function and multiplies the length by a random amount so there is a chance of it occuring.
 // it then resets the position of the player for the next piece.
 function playerReset() {
-  const pieces = "ILJOTSZ";
+  const pieces = 'ILJOTSZ';
   player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
   player.pos.y = 0;
   player.pos.x = (tetrisBoard[0].length / 2 | 0) -
@@ -232,6 +236,8 @@ function playerDrop() {
     }
     dropCounter = 0;
 }
+// Gets the id in the html and gets the text which is displayed as player.score
+// Score is something we set when we created the player object.
 function updateScore() {
 document.getElementById('score').innerText = player.score;
 }
@@ -243,7 +249,7 @@ document.addEventListener('keydown', event => {
         playerMove(-1);
     } else if (event.keyCode === 39) {
         playerMove(1);
-    } else if (event.keyCode === 40 ) {
+    } else if (event.keyCode === 40) {
         playerDrop();
     } else if (event.keyCode === 81) {
       playerRotate(-1);
