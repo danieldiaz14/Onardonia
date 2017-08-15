@@ -5,8 +5,18 @@
     <link rel='stylesheet', href="../styles/tetris.css" type="text/css">
   </head>
   <body>
-    <div id="score"></div>
-    <canvas id="tetris" width="240" height="400"></canvas>
-    <script src="../scripts/tetris.js"></script>
+    <header>
+      <canvas id="fight" width="800" height="250"></canvas>
+      <span id="health1"><img src="../resources/images/health-bar.png"</span>
+    </header>
+    <main class="main">
+      <div id="score"></div>
+      <span id="action1"><img src="../resources/images/action.png"/></span>
+      <span id="action2"><img src="../resources/images/action.png"/></span>
+      <span id="action3"><img src="../resources/images/action.png"/></span>
+      <canvas id="tetris" width="200" height="400"></canvas>
+      <script src="../scripts/tetris.js"></script>
+      <script src="../scripts/fight.js"></script>
+    </main>
   </body>
 </html>
