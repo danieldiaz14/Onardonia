@@ -1,9 +1,16 @@
 const canvas = document.getElementById('fight');
 const sfx = canvas.getContext('2d');
 
-sfx.scale(20,20);
-
 function draw() {
-  context.fillStyle = '#000';
-  context.fillRect(0,0, canvas.width, canvas.height);
+  sfx.fillStyle = '#000';
+  sfx.fillRect(0,0, canvas.width, canvas.height);
 }
+const enemy = {
+  health: 100,
+  choice:
+}
+const player = {
+  choice: null,
+}
+
+draw();
