@@ -31,11 +31,26 @@
   left: 320px;
   bottom: 140px;
 }
+#enemy {
+  position: absolute;
+  z-index: 2;
+  left: 760px;
+  bottom: 140px;
+}
 #rock {
   position: absolute;
-  left: 480px;
+  left: 475px;
   bottom: 100px;
   z-index: 1;
+}
+#rock:active {
+  position: absolute;
+  left: 475px;
+  bottom: 100px;
+  z-index: 1;
+  border: 2px solid #42f4f4;
+  border-radius: 30px;
+  transform: translateY(4px);
 }
 #paper {
   position: absolute;
@@ -43,11 +58,29 @@
   bottom: 100px;
   z-index: 1;
 }
-#scissors {
+#paper:active {
   position: absolute;
-  left: 560px;
+  left: 520px;
   bottom: 100px;
   z-index: 1;
+  border: 2px solid #f1f42e;
+  border-radius: 30px;
+  transform: translateY(4px);
+}
+#scissors {
+  position: absolute;
+  left: 565px;
+  bottom: 100px;
+  z-index: 1;
+}
+#scissors:active {
+  position: absolute;
+  left: 565px;
+  bottom: 100px;
+  z-index: 1;
+  border: 2px solid #c4111d;
+  border-radius: 30px;
+  transform: translateY(4px);
 }
 #tetris {
   position: static;
