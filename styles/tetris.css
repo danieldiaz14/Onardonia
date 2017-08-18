@@ -18,13 +18,36 @@
   position: absolute;
 }
 #fight {
-  background-image: url(../resources/images/background.gif);
   border: 4px solid black;
-  margin-left: 18%;
-  margin-top: 6%;
+  margin-left: 25%;
+  margin-top: 3%;
   margin-bottom: 0%;
   padding: 0;
   z-index: 0;
+}
+#health {
+  position: absolute;
+  z-index: 2;
+  left: 320px;
+  bottom: 140px;
+}
+#rock {
+  position: absolute;
+  left: 480px;
+  bottom: 100px;
+  z-index: 1;
+}
+#paper {
+  position: absolute;
+  left: 520px;
+  bottom: 100px;
+  z-index: 1;
+}
+#scissors {
+  position: absolute;
+  left: 560px;
+  bottom: 100px;
+  z-index: 1;
 }
 #tetris {
   position: static;
@@ -33,31 +56,25 @@
 }
 #attack {
 }
-#health1 {
-  width: 100%;
-  height: 400px;
-  position: relative;
-  top: -200px;
-  left: -750px;
-}
+
 #score {
   position: absolute;
   right: 405px;
-  top: 370px;
+  top: 230px;
   border: 3px solid #C0C0C0;
 }
 #action1 {
   position: absolute;
   right: 395px;
-  top: 440px;
+  top: 300px;
 }
 #action2 {
   position: absolute;
   right: 395px;
-  top: 510px;
+  top: 370px;
 }
 #action3 {
   position: absolute;
   right: 395px;
-  top: 580px;
+  top: 430px;
 }

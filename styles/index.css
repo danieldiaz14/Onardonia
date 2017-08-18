@@ -7,3 +7,71 @@ body.landing {
     position: relative;
     top: 200px;
 }
+h1 {
+  font-size: 80px;
+  text-align: center;
+  margin-left: 65px;
+}
+#Play {
+  list-style-type: none;
+  font-size: 60px;
+}
+#Play a {
+  text-decoration: none;
+  color: #efefef;
+  background-color: #444444;
+  border: 0.1em solid grey;
+  border-radius: 15px;
+}
+#Play :hover {
+  background: #c8d7c8;
+  color: #444444;
+  opacity: 1;
+  font-size: 70px;
+  transition: font-size 1.5s;
+  transition-delay: 0.2s;
+}
+
+#Settings {
+  list-style-type: none;
+  font-size: 60px;
+  margin-top: 20px;
+}
+#Settings a {
+  text-decoration: none;
+  color: #efefef;
+  background-color: #444444;
+  border: 0.1em solid grey;
+  border-radius: 15px;
+}
+
+#Settings :hover {
+  background: #c8d7c8;
+  color: #444444;
+  opacity: 1;
+  font-size: 70px;
+  transition: font-size 1.5s;
+  transition-delay: 0.2s;
+}
+
+#About {
+  list-style-type: none;
+  font-size: 60px;
+  margin-top: 20px;
+}
+#About a {
+  text-decoration: none;
+  color: #efefef;
+  background-color: #444444;
+  border: 0.1em solid grey;
+  border-radius: 15px;
+}
+
+#About :hover {
+  background: #c8d7c8;
+  color: #444444;
+  opacity: 1;
+  font-size: 70px;
+  transition: font-size 1.5s;
+  transition-delay: 0.2s;
+}

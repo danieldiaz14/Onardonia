@@ -127,6 +127,7 @@ function update(time = 0) {
     lastTime = time;
     draw();
     requestAnimationFrame(update);
+    drawFight();
 }
 //this create the playing board or border.
 const tetrisBoard = holdMatrix(10, 20);
@@ -233,6 +234,7 @@ function playerDrop() {
         playerReset();
         tetrisSweep();
         updateScore();
+
     }
     dropCounter = 0;
 }
