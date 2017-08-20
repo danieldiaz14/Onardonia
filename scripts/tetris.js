@@ -109,12 +109,15 @@ function createPiece(type) {
     ];
   }
 }
-//keeps track of time and makes sure the pieces are going if the player isn't manually moving them down
+//drop Counter is keeping track of how much time has gone bye
+// once a threshold has been reached aka dropInterval. then call the playerDrop function which moves the piece down
+// lastTime is keeping track of the difference in time from when the application first started and where it is now.
 let dropCounter = 0;
-let dropInterval = 1000;
+const dropInterval = 1000;
 let lastTime = 0;
 
 //this updates the time of the game and changes the dropCounter depending if the player moved or not.
+//dropCounter keeps track of the time alapsed once it is greather than dropInterval dropCounter
 function update(time = 0) {
     const gameTime = time - lastTime;
     lastTime = time;
@@ -127,7 +130,7 @@ function update(time = 0) {
     lastTime = time;
     draw();
     requestAnimationFrame(update);
-    drawFight();
+    battle(player.choice, computer());
 }
 //this create the playing board or border.
 const tetrisBoard = holdMatrix(10, 20);
@@ -165,6 +168,7 @@ const player = {
     matrix: null,
     score: 0,
     health: 100,
+    choice: null,
 };
 //Allows the player to move along the board in the direction chosen.
 function playerMove(dir) {

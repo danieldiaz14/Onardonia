@@ -31,7 +31,7 @@
   left: 320px;
   bottom: 140px;
 }
-#enemy {
+#enemyBar {
   position: absolute;
   z-index: 2;
   left: 760px;
