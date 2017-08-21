@@ -130,7 +130,6 @@ function update(time = 0) {
     lastTime = time;
     draw();
     requestAnimationFrame(update);
-    battle(player.choice, computer());
 }
 //this create the playing board or border.
 const tetrisBoard = holdMatrix(10, 20);

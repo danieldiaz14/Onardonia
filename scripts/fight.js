@@ -3,7 +3,8 @@ const sfx = fightCanvas.getContext('2d');
 
 sfx.scale(2,2);
 let health = document.getElementById("health");
-health.value = player.health;
+player.health = health.value;
+
 let enemyHealth = document.getElementById('enemyBar');
 var heroArray = [
   document.getElementById('hero1'),
@@ -47,16 +48,17 @@ var choice = [
   document.getElementById('scissors'),
 ]
 
-const rock = choice[0].addEventListener('click', event=> { player.choice = "rock";});
-const paper = choice[1].addEventListener('click', event=> { player.choice = "paper";});
-const scissors = choice[2].addEventListener('click', event=> { player.choice = "scissors";});
+const rock = choice[0].addEventListener('click', event=> { player.choice = "rock"; battle(player.choice, computer()); stopFrame = true;});
+const paper = choice[1].addEventListener('click', event=> { player.choice = "paper"; battle(player.choice, computer()); stopFrame = true;});
+const scissors = choice[2].addEventListener('click', event=> { player.choice = "scissors"; battle(player.choice, computer()); stopFrame = true;});
 
 const start = 25;
 var xAxis = start;
 var counter = 0;
-let animateInterval = 600;
+let animateInterval = 300;
 let timeDifference = 0;
 let frame = 0;
+var stopFrame = false;
 
 //at frame 4 x needs to be negative until start
 // array length = 34. Last element 33
@@ -66,11 +68,14 @@ function spriteAnimate (time = 0) {
   timeDifference = time;
 
   counter += frameTime;
+  if (counter > animateInterval) {
+    if ( stopFrame == true) {
+      animation();
+    }
+  }
   timeDifference = time;
-
-  //console.log(computer());
-  requestAnimationFrame(spriteAnimate);
   drawFight();
+  requestAnimationFrame(spriteAnimate);
 }
 
 function animation () {
@@ -78,6 +83,8 @@ function animation () {
     if (frame == 33) {
       frame = 0;
       xAxis = start;
+      counter = 0;
+      stopFrame = false;
     } else if ( frame >= 16 && frame < 33) {
       frame ++;
       xAxis -= 10;
@@ -95,7 +102,7 @@ function battle(choice1, choice2) {
     if (choice2 === "rock") {
       enemyHealth.value -= 5;
     } else if ( choice2 === "scissors") {
-      player.health -= 5;
+      health.value -= 5;
     }
   } else if ( choice1 === "rock") {
     if (choice2 === "scissors") {
@@ -103,13 +110,14 @@ function battle(choice1, choice2) {
     } else if (choice2 === "paper") {
       player.health -= 5;
     }
-  } else if (choice2 === "scissors") {
+  } else if (choice1 === "scissors") {
     if (choice2 === "paper") {
       enemyHealth.value -= 5;
     } else if (choice2 === "rock") {
       player.health -= 5;
     }
   }
+  counter = 0;
 }
 
 function computer () {
@@ -127,6 +135,7 @@ function computer () {
 var enemy = {
   bahamut: document.getElementById('enemy'),
 }
+var background = document.getElementById('background')
 function drawFight() {
   sfx.fillStyle = "#000";
   sfx.fillRect(0, 0, fightCanvas.width, fightCanvas.height);
