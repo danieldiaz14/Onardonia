@@ -71,6 +71,7 @@ function spriteAnimate (time = 0) {
   if (counter > animateInterval) {
     if ( stopFrame == true) {
       animation();
+      computer();
     }
   }
   timeDifference = time;
