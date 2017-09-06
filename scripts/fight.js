@@ -4,6 +4,7 @@ const sfx = fightCanvas.getContext('2d');
 sfx.scale(2,2);
 let health = document.getElementById("health");
 player.health = health.value;
+var damage = 1;
 
 let enemyHealth = document.getElementById('enemyBar');
 var heroArray = [
@@ -48,14 +49,15 @@ var choice = [
   document.getElementById('scissors'),
 ]
 
-const rock = choice[0].addEventListener('click', event=> { player.choice = "rock"; battle(player.choice, computer()); stopFrame = true;});
-const paper = choice[1].addEventListener('click', event=> { player.choice = "paper"; battle(player.choice, computer()); stopFrame = true;});
-const scissors = choice[2].addEventListener('click', event=> { player.choice = "scissors"; battle(player.choice, computer()); stopFrame = true;});
+const rock = choice[0].addEventListener('click', event=> { player.choice = "rock"; victory(); battle(player.choice, computer()); stopFrame = true;});
+const paper = choice[1].addEventListener('click', event=> { player.choice = "paper"; victory(); battle(player.choice, computer()); stopFrame = true;});
+const scissors = choice[2].addEventListener('click', event=> { player.choice = "scissors"; victory(); battle(player.choice, computer()); stopFrame = true;});
 
 const start = 25;
 var xAxis = start;
 var counter = 0;
 let animateInterval = 300;
+var bossHealInterval = 600;
 let timeDifference = 0;
 let frame = 0;
 var stopFrame = false;
@@ -73,6 +75,10 @@ function spriteAnimate (time = 0) {
       animation();
       computer();
     }
+  }
+
+  if(counter > bossHealInterval) {
+    enemyHealth.value += 2;
   }
   timeDifference = time;
   drawFight();
@@ -96,26 +102,34 @@ function animation () {
   }
 }
 
+function victory() {
+  if( enemyHealth.value <= 0) {
+    alert("You slain the dragon!")
+  } else if (health.value <= 0) {
+    alert('You lose. No more hp!')
+  }
+}
+
 function battle(choice1, choice2) {
   if (choice1 === choice2) {
     return ;
   } else if (choice1 === "paper") {
     if (choice2 === "rock") {
-      enemyHealth.value -= 5;
+      enemyHealth.value -= damage;
     } else if ( choice2 === "scissors") {
-      health.value -= 5;
+      health.value -= 10;
     }
   } else if ( choice1 === "rock") {
     if (choice2 === "scissors") {
-      enemyHealth.value -= 5;
+      enemyHealth.value -= damage;
     } else if (choice2 === "paper") {
-      player.health -= 5;
+      player.health -= 10;
     }
   } else if (choice1 === "scissors") {
     if (choice2 === "paper") {
-      enemyHealth.value -= 5;
+      enemyHealth.value -= damage;
     } else if (choice2 === "rock") {
-      player.health -= 5;
+      player.health -= 10;
     }
   }
   counter = 0;

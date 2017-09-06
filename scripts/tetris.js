@@ -60,6 +60,8 @@ function tetrisSweep() {
     ++y;
 
     player.score += rowCount * 10;
+    damage += 2;
+    health.value += 10;
     rowCount *= 2;
   }
 }
@@ -188,7 +190,11 @@ function playerReset() {
   if (collision(tetrisBoard, player)) {
     tetrisBoard.forEach(row => row.fill(0));
     player.score = 0;
+    health.value = 100;
+    enemyHealth.value = 500;
+    damage = 0;
     updateScore();
+    alert('You lose! Remember the board!');
   }
 }
 // Flips where in the matrix is currently not equal to 0.
