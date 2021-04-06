@@ -12,11 +12,15 @@
       <a href="https://danieldiaz14.github.io/" class="menu">Portfolio</a>
     </header>
     <main class="main">
-      <p id="message1"> Press Q and E to rotate the pieces!<br/> Arrows to move around</p>
+      <div class="messageArea">
+        <p id="message1"> Press Q and E to rotate the pieces!<br/> Arrows to move around</p>
+        <button onclick="toggleAudio()">Pause Music</button>
+      </div>
       <div id="score"></div>
       <canvas id="tetris" width="200" height="400"></canvas>
+      <audio src="../music/menu.mp3" loop></audio>
       <script src="../scripts/tetris.js" type="text/javascript"></script>
-      <audio src="../music/menu.mp3" autoplay></audio>
     </main>
+    <noscript>Your browser does not support Javascript!</noscript>
   </body>
 </html>

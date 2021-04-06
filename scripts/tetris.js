@@ -1,6 +1,6 @@
 const canvas = document.getElementById('tetris'); //Gets the canvas from html document.
 const context = canvas.getContext('2d'); // Selects which context api to use
-
+const gameAudio = document.querySelector('audio');
 context.scale(20,20); //increases the size of the pieces by 20 x 20
 
 //colors of pieces
@@ -15,8 +15,19 @@ const colors = [
     '#FF0303',
 ];
 
+function toggleAudio() {
+  const audioButton = document.querySelector('button');
+  if (gameAudio.paused) {
+    gameAudio.play();
+    audioButton.innerText = 'Pause Music';
+  } else {
+    gameAudio.pause();
+    audioButton.innerText = 'Play Music';
+  }
+}
+
 function draw() {
-    context.fillStyle = '#000'; //fills canvas with this color
+    context.fillStyle = '#141313'; //fills canvas with this color
     context.fillRect(0,0, canvas.width, canvas.height); // shape of the canvas. Width and Height.
     drawMatrix(tetrisBoard, {x: 0, y:0});
     drawMatrix(player.matrix, player.pos);
@@ -31,7 +42,7 @@ function drawMatrix(matrix, offset) {
                 context.fillStyle = colors[value];
                 context.fillRect(x + offset.x,
                                  y + offset.y,
-                                 1, 1,);
+                                 1, 1);
             }
         });
     });
@@ -65,49 +76,16 @@ function tetrisSweep() {
 }
 //Creates the shape based on the structure of the Matrix
 function createPiece(type) {
-  if (type === 'T') {
-    return [
-      [0, 0, 0],
-      [1, 1, 1],
-      [0, 1, 0],
-    ];
-  } else if (type === 'O') {
-    return [
-      [2, 2],
-      [2, 2],
-    ];
-  } else if (type === "L") {
-    return [
-      [0, 3, 0],
-      [0, 3, 0],
-      [0, 3, 3],
-    ];
-  } else if (type === "J") {
-    return [
-      [0, 4, 0],
-      [0, 4, 0],
-      [4, 4, 0],
-    ];
-  } else if (type === "I") {
-    return [
-      [0, 5, 0, 0],
-      [0, 5, 0, 0],
-      [0, 5, 0, 0],
-      [0, 5, 0, 0],
-    ];
-  } else if (type === "S") {
-    return [
-      [0, 6, 6],
-      [6, 6, 0],
-      [0, 0, 0],
-    ];
-  } else if (type === "Z") {
-    return [
-      [7, 7, 0],
-      [0, 7, 7],
-      [0, 0, 0],
-    ];
+  const pieceShape = {
+    'T': [[0, 0, 0], [1,1,1], [0,1,0]],
+    'O': [[2,2],[2,2]],
+    'L': [[0,3,0],[0,3,0],[0,3,3]],
+    'J': [[0, 4, 0], [0, 4, 0], [4, 4, 0]],
+    'I': [[0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0], [0, 5, 0, 0]],
+    'S': [[0, 6, 6], [6, 6, 0], [0, 0, 0]],
+    'Z': [[7, 7, 0], [0, 7, 7], [0, 0, 0]]
   }
+  return pieceShape[type];
 }
 // drop Counter is keeping track of how much time has gone by
 // once a threshold has been reached aka dropInterval. then call the playerDrop function which moves the piece down
@@ -146,7 +124,7 @@ function merge(tetrisBoard, player) {
         });
     });
 }
-//collision for the player's pieces and the board
+// collision for the player's pieces and the board
 // For loop checks if it does not equal 0 that means a piece is there and it can't replace it
 // else means it is a 0 and can be replaced.
 function collision(tetrisBoard, player) {
@@ -180,6 +158,9 @@ function playerMove(dir) {
 // Function takes a string of all possible pieces
 // creates the matrix by checking the pieces of the function and multiplies the length by a random amount so there is a chance of it occuring.
 // it then resets the position of the player for the next piece.
+// TODO decouple this logic. it isn't playerReset
+// it is a terrible name because it isn't resetting the player this is what updates the piece when the game moves forward
+// might want to check this logic once the piece is dropped
 function playerReset() {
   const pieces = 'ILJOTSZ';
   player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
@@ -246,7 +227,7 @@ function playerDrop() {
 // Gets the id in the html and gets the text which is displayed as player.score
 // Score is something we set when we created the player object.
 function updateScore() {
-document.getElementById('score').innerText = player.score;
+  document.getElementById('score').innerText = player.score;
 }
 //an event listener watching for key codes
 // Keycodes represent what key on the keyboard is pressed.
@@ -265,7 +246,9 @@ document.addEventListener('keydown', e => {
       playerRotate(1);
     }
 });
+
 //updates the state of the board.
 playerReset();
 updateScore();
 update();
+gameAudio.play();

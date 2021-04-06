@@ -10,6 +10,13 @@
 header {
   background: #C0C0C0;
 }
+
+button {
+  background-color: #52b948;
+  color: white;
+  display: inline-block;
+}
+
 .menu {
   color: black;
   font-size: 30px;
