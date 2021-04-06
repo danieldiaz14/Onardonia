@@ -6,6 +6,7 @@
   text-align: center;
   display: block;
 }
+
 header {
   background: #C0C0C0;
 }
@@ -17,16 +18,18 @@ header {
   text-align: center;
   display: inline-block;
   left: 500px;
+  transition-duration: .5s;
 }
-.menu :hover {
-  color: gray;
-  font-size: 40px;
+.menu:hover {
+  color: rgb(211, 26, 26);
   text-decoration: none;
   position: relative;
   text-align: center;
   display: inline-block;
   left: 500px;
+  transform: scale(1.05);
 }
+
 #tetris {
   position: static;
   border: solid .2em #C0C0C0;
@@ -40,18 +43,21 @@ header {
   border: 3px solid #C0C0C0;
 }
 
-#message1{
+#message1 {
   text-align: center;
-  -webkit-animation: message1 5s forwards;
-  animation: message1 5s forwards;
+  -webkit-animation: message1 15s forwards;
+  animation: message1 15s forwards;
 }
 
 @keyframes message1 {
+  from { left: 0px;}
+  to {left: 200px; }
   0% {
     opacity: 1;
+    top: 0px;
   }
   100% {
+    top: 200px;
     opacity: 0;
-    left: -9999px;
   }
 }
