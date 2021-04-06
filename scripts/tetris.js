@@ -60,8 +60,6 @@ function tetrisSweep() {
     ++y;
 
     player.score += rowCount * 10;
-    damage += 2;
-    health.value += 10;
     rowCount *= 2;
   }
 }
@@ -111,7 +109,7 @@ function createPiece(type) {
     ];
   }
 }
-//drop Counter is keeping track of how much time has gone bye
+// drop Counter is keeping track of how much time has gone by
 // once a threshold has been reached aka dropInterval. then call the playerDrop function which moves the piece down
 // lastTime is keeping track of the difference in time from when the application first started and where it is now.
 let dropCounter = 0;
@@ -137,10 +135,12 @@ function update(time = 0) {
 const tetrisBoard = holdMatrix(10, 20);
 
 //Keeps track of where the pieces are at.
-function merge( tetrisBoard, player) {
+function merge(tetrisBoard, player) {
     player.matrix.forEach((row, y) => {
         row.forEach((value, x) => {
-            if (value !== 0) {
+          const isNotEmpty = value !== 0;
+
+            if (isNotEmpty) {
                 tetrisBoard[y + player.pos.y][x + player.pos.x] = value;
             }
         });
@@ -165,11 +165,10 @@ function collision(tetrisBoard, player) {
 }
 //Keeps Track of the players pieces
 const player = {
-    pos: {x: 0, y: 0},
+    pos: { x: 0, y: 0 },
     matrix: null,
     score: 0,
-    health: 100,
-    choice: null,
+    choice: null
 };
 //Allows the player to move along the board in the direction chosen.
 function playerMove(dir) {
@@ -190,11 +189,8 @@ function playerReset() {
   if (collision(tetrisBoard, player)) {
     tetrisBoard.forEach(row => row.fill(0));
     player.score = 0;
-    health.value = 100;
-    enemyHealth.value = 500;
-    damage = 0;
     updateScore();
-    alert('You lose! Remember the board!');
+    alert('You lose! Thanks for playing.');
   }
 }
 // Flips where in the matrix is currently not equal to 0.
@@ -255,16 +251,17 @@ document.getElementById('score').innerText = player.score;
 //an event listener watching for key codes
 // Keycodes represent what key on the keyboard is pressed.
 // Moves the pieces or rotates depending on the key pressed.
-document.addEventListener('keydown', event => {
-    if (event.keyCode === 37) {
+document.addEventListener('keydown', e => {
+  const buttonPressed = e.key;
+    if (buttonPressed === 'a' || buttonPressed === "ArrowLeft") {
         playerMove(-1);
-    } else if (event.keyCode === 39) {
+    } else if (buttonPressed === 'd' || buttonPressed === "ArrowRight") {
         playerMove(1);
-    } else if (event.keyCode === 40) {
+    } else if (buttonPressed === 's' || buttonPressed === "ArrowDown") {
         playerDrop();
-    } else if (event.keyCode === 81) {
+    } else if (buttonPressed === 'q') {
       playerRotate(-1);
-    } else if (event.keyCode === 69) {
+    } else if (buttonPressed === 'e') {
       playerRotate(1);
     }
 });

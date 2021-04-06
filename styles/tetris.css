@@ -45,7 +45,8 @@ header {
   -webkit-animation: message1 5s forwards;
   animation: message1 5s forwards;
 }
-@@keyframes message1 {
+
+@keyframes message1 {
   0% {
     opacity: 1;
   }
